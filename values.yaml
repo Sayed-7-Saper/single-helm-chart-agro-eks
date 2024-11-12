@@ -1,0 +1,47 @@
+global:
+  deployment:
+    maxUnavailable: 1
+    SECURITY_CONTEXT:
+      nodeUser: "allow-root" # "nodeuser-scc"
+      nginxUser: "allow-root" # "nginxuser-scc"
+    registeryconfig:
+      name: "reg-pull-secret"
+      username: "robot-prod-pull-secret"
+      password: "d4......sWJX"
+      email: "devops@.....com"
+      registry: "registry-URL"
+replicaCount: 2
+
+serviceAccount:
+  create: true
+autoscaling:
+  enabled: fales
+  minReplicas: 1
+  maxReplicas: 4
+image:
+  repository: <YOUR_AWS_ACCOUNT_ID>.dkr.ecr.<YOUR_REGION>.amazonaws.com/<YOUR_ECR_REPOSITORY>
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+ingress:
+  enabled: true
+  annotations:
+    konghq.com/strip-path: "true"
+  hosts:
+    - host: "www.example.com"
+      paths:
+        - /
+  tls:
+    - secretName: "my-service-tls"
+      hosts:
+        - "www.example.com"
+
+config:
+  appEnvironment: "production"
+  logLevel: "info"
+  customMessage: "Hello from ConfigMap!"
