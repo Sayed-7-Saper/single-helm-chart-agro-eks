@@ -18,6 +18,8 @@ autoscaling:
   enabled: fales
   minReplicas: 1
   maxReplicas: 4
+podAnnotations:
+  reloader.stakater.com/auto: "true"  
 image:
   repository: <YOUR_AWS_ACCOUNT_ID>.dkr.ecr.<YOUR_REGION>.amazonaws.com/<YOUR_ECR_REPOSITORY>
   tag: latest
